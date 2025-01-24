@@ -1,0 +1,30 @@
+[
+  {
+    "username": "admin",
+    "password": "admin",
+    "userId": 0,
+    "posts": [
+      {
+        "postContent": "test",
+        "postId": 0
+      },
+      {
+         "postContent": "yes",
+         "postId": 1
+      }
+    ],
+    "friends": []
+  },
+  {
+    "username": "daw",
+    "password": "dwa",
+    "userId": 2,
+    "posts": [
+      {
+         "postContent": "test",
+         "postId": 2
+      }
+   ],
+    "friends": []
+  }
+]

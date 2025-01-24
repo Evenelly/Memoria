@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+   <header class="header">
+      <strong class="title">Memoria</strong>
+   </header>
+
+   <div class="flex-container">
+      <form class="log-sign" action="/signinUser" method="post" autocomplete="off">
+         <h3>Skapa konto</h3>
+         <p>Användarnamn: </p>
+         <input type="text" name="newUsername">
+         <p>Lösenord:</p>
+         <input type="text" name="newPassword">
+         <p>Har redan ett konto?</p>
+         <a href="login.html"><button type="button">Logga in</button></a>
+         <div>
+            <button type="submit">Skicka</button>
+         </div>
+      </form>
+   </div>
+
+   <script src="main.js"></script>
+</body>
+
+</html>
