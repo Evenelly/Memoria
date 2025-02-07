@@ -1,11 +1,16 @@
-var express = require("express");
+const express = require("express");
 var server = express();
 var bodyParser = require("body-parser");
 var path = require("path");
 var fs = require("fs");
 var cookie = require("cookie-parser");
+
+const multer = require("multer")
+const upload = multer({ dest: 'uploads/' })
+
+
 let userId = 0; 
-let postId = 0;
+let postId = 21;
 
 server.use(cookie());
 server.use(bodyParser.urlencoded({extended:true}))
@@ -74,19 +79,22 @@ server.post("/signinUser", function (req, res) {
 
       if (!alreadyTaken && hasCapitalLetters && hasNumbers) {
          userId += 1; 
-         let newInstance = new User(newUser, newPass, userId) 
 
-         // newLogIn = {
-         //    username: newUser,
-         //    password: newPass
-         // }
+         newLogIn = {
+            username: newUser,
+            password: newPass,
+            userId: userId,
+            posts: [],
+            friends: [],
 
-         // res.cookie("enteredBefore", true)
-         // res.cookie("username", newUser)
-         // res.cookie("password", newPass)
+         }
+
+         res.cookie("enteredBefore", true)
+         res.cookie("username", newUser)
+         res.cookie("password", newPass)
 
 
-         usersObject.push(newInstance)
+         usersObject.push(newLogIn)
          let updatedData = JSON.stringify(usersObject)
          fs.writeFileSync(path.join(__dirname, 'accounts.json'), updatedData);
 
@@ -104,7 +112,6 @@ server.post("/signinUser", function (req, res) {
 
 
 
-//fungerar inte än
 server.post("/post", function(req,res){
    postContent = req.body.textInput;
    username = req.cookies.username;
@@ -117,7 +124,7 @@ server.post("/post", function(req,res){
    postId += 1; 
 
 
-   user = findUserByUsernameAndId(username, userId);
+   user = findUserById(userId);
 
    if (user) {
       user.posts.push(newPost);
@@ -140,16 +147,63 @@ server.post("/post", function(req,res){
    console.log("post added")
 })
 
-function findUserByUsernameAndId(username, userId) {
+server.post("/comment", function (req, res) {
+   const commentInput = req.body.commentInput;
+   const commenterUsername = req.cookies.username;
+   const postUsername = req.body.username;
+   const postId = req.body.postId;
+
+   // console.log(commentInput);
+   // console.log(commenterUsername);
+   // console.log(postUsername);
+   // console.log(postId);
+
+
+
+   const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
+   //console.log(users)
+
+   let postFound = false;
+
+   for (let i = 0; i < users.length && !postFound; i++) {
+      for (let j = 0; j < users[i].posts.length && !postFound; j++) {
+
+         console.log("Looking: " + users[i].username)
+         console.log("Looking: " + users[i].posts[j].postId)
+         console.log("Find: " + postUsername)
+         console.log("Find: " + postId)
+
+         if (users[i].username == postUsername && users[i].posts[j].postId == postId) {
+            const newComment = {
+               username: commenterUsername,
+               comment: commentInput
+            };
+
+            users[i].posts[j].comments.push(newComment);
+            postFound = true;
+         }
+      }
+   }
+
+   if (postFound) {
+      fs.writeFileSync(path.join(__dirname, 'accounts.json'), JSON.stringify(users, null, 2));
+      res.send("Comment added successfully!");
+   } else {
+      res.status(404).send("Post not found.");
+   }
+});
+
+
+function findUserById(userId) {
    var users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
 
    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === username && parseInt(users[i].userId, 10) === userId) {
+      if (parseInt(users[i].userId, 10) === userId) {
          return users[i]
       }
    }
 
-   return console.log("error in findUserByUsernameAndId")
+   return console.log("error in findUserById")
 
 }
 
@@ -159,35 +213,94 @@ function findUserByUsernameAndId(username, userId) {
 server.get("/posts", function (req, res) {
    let users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
 
-   const username = req.cookies.username;
-   const userId = parseInt(req.cookies.userId, 10);
+   
+   let allPosts = []
 
-   let user = findUserByUsernameAndId(username, userId);
+   for (let i = 0; i < users.length; i++) {
+      user = {
+         username: users[i].username,
+         posts: users[i].posts
+      }
+      allPosts.push(user)
+   }
 
    if (user) {
-      res.json({
-         posts: user.posts,
-         username: user.username
-      });
+      res.json(allPosts);
       } else {
-      res.status(404).send("User not found.");
+      res.status(404).send("Posts not found.");
    }
 });
 
 server.get("/friends", function(req, res){
    let users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
 
-   const username = req.cookies.username;
+   //const username = req.cookies.username;
    const userId = parseInt(req.cookies.userId, 10);
 
-   let user = findUserByUsernameAndId(username, userId);
+   let user = findUserById(userId);
+
+   userFriends = []
+
+   for (let i = 0; i < user.friends.length; i++) {
+      let friendUser = findUserById(user.friends[i]);
+      console.log(friendUser)
+
+      let userObj = {
+         username: friendUser.username,
+         userId: friendUser.userId, 
+         posts: friendUser.posts
+      }
+      userFriends.push(userObj)
+   }
 
    if (user) {
-      res.json(user.friends);
+      res.json(userFriends);
    } else {
       res.status(404).send("User not found.");
    }
 })
+
+
+
+server.post("/saveFile", upload.single("profilePicture"), function (req, res, next) {
+   console.log(req.file)
+   const filePath = req.file.path
+
+   const userId = parseInt(req.cookies.userId, 10);
+
+   let users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
+
+   for (let i = 0; i < users.length; i++) {
+      if(users[i].userId === userId){
+         users[i].profilePicture = filePath;
+      }
+   }
+
+
+   let updatedData = JSON.stringify(users)
+   fs.writeFileSync(path.join(__dirname, 'accounts.json'), updatedData);
+});
+
+server.get("sendProfilePicture", function(res, req){
+   let users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
+
+   const userId = parseInt(req.cookies.userId, 10);
+
+   let user = findUserById(userId);
+
+   for (let i = 0; i < users.length; i++) {
+      if(users[i].userId === userId){
+         let profilePicture = users[i].profilePicture
+      }      
+   }
+
+   if (user) {
+      res.json(profilePicture);
+   } else {
+      res.status(404).send("User not found.");
+   }
+})
+
 
 
 // class User {

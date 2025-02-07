@@ -1,57 +1,289 @@
+
+
+//index
 let overlay = document.getElementById("overlay")
 
-function popUpShow() {
+function popUpShow() { //sätter på popuppen
    if (overlay.style.display === "" || overlay.style.display === "none") {
       overlay.style.display = "block";
    }
 }
 
-function popUpDisable() {
+let settings = document.getElementById("settings")
+
+function settingsPop(){
+   if (settings.style.display === "none"){
+      settings.style.display = "flex";
+   }else{
+      settings.style.display = "none"
+   }
+}
+
+function popUpDisable() { //stänger av popuppen
    overlay.style.display = "none";
 }
 
-getUserPost()
+//pre set
+if (window.location.pathname.includes("index.html")) { //skriver ut postsen direkt
+   writePost();
+}else if (window.location.pathname.includes("friends.html")) {
+   showFriends();
+}
 
-function getUserPost(){
-   fetch('/posts')
-      .then(response => response.json())
-      .then(object => {
-         const postsContainer = document.getElementById('postsContainer');
+//från servern
+async function getPosts() {
+   try {
+      response = await fetch('/posts');
+      allPosts = await response.json();
+      return allPosts;
+   }
+   catch (error) {
+      console.error('Error fetching posts:', error);
+   };
+}
 
-         for (let i = 0; i < object.posts.length; i++) {
-            const postElement = document.createElement("div");
-            postElement.classList.add("feed-post-container");
+async function getFriends() {
+   try {
+      response = await fetch('/friends');
+      friends = await response.json();
+      return friends;
+   }
+   catch (error) {
+      console.error('Error fetching posts:', error);
+   };
+}
 
-            postElement.innerHTML = `<h3>${object.username} </h3> <p> ${object.posts[i].postContent} </p>`
+//strukturer
+function postStructure(allPostContents) {
 
-            postsContainer.appendChild(postElement);
+   shuffleArray(allPostContents);
 
-            const interactions = document.createElement("div")
-            interactions.classList.add("interactions")
-            
-            const svg = document.createElement("svg");
-            svg.setAttribute("xmlns", "http://www.w3.org/2000/svg")
-            svg.setAttribute("width", "20")
-            svg.setAttribute("height", "20")
-            svg.setAttribute("fill", "currentColor")
-            svg.setAttribute("class", "bi bi-heart-fill")
-            svg.setAttribute("viewBox", "0 0 16 16")
+   const postsContainer = document.getElementById('postsContainer');
+   postsContainer.innerHTML = "";
 
-            const path = document.createElement("path")
-            path.setAttribute("fill-rule", "evenodd")
-            path.setAttribute("d", "M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314")
 
-            svg.appendChild(path)
-            interactions.appendChild(svg)
-            postElement.appendChild(interactions)
 
-            console.log("Posts container content:", postsContainer.innerHTML);
-            
-         }
-            
-      })
-      .catch(error => {
-         console.error('Error fetching posts:', error);
+   allPostContents.forEach(post => {
+      const postElement = document.createElement("div");
+      postElement.classList.add("feed-post-container");
+
+      const usernameHeading = document.createElement("h2");
+      usernameHeading.textContent = post.username;
+      postElement.appendChild(usernameHeading);
+
+      const postContent = document.createElement("p");
+      postContent.textContent = post.postContent;
+      postElement.appendChild(postContent);
+
+      const interactions = document.createElement("div");
+      interactions.classList.add("interactions");
+
+      icons(true, postElement, interactions, post)
+      icons(false, postElement, interactions, post)
+
+      postsContainer.appendChild(postElement);
+   });
+}
+
+
+
+function commentStructure(post) {
+   main = document.getElementById("main");
+   main.innerHTML = "";
+
+   const outerDiv = document.createElement("div")
+   const divPost = document.createElement("div");
+
+   const originalComment = document.createElement("div")
+   const commentSection = document.createElement("div")
+   const commentInput = document.createElement("div")
+
+   originalComment.innerHTML = `   
+   <h3>${post.username}</h3>
+   <p>${post.postContent}</p>`
+   divPost.append(originalComment)
+
+
+   commentInput.innerHTML = `
+   <form action="/comment" method="post">
+      <h4>Kommentera</h4>
+      <textarea id="comment" type="text" placeholder="Kommentera på inlägget... (max 1000 karaktärer)" maxlength="1000"
+      name="commentInput"></textarea>
+
+      <!-- Hidden inputs for postUsername and postId -->
+      <input type="hidden" name="username" value="${post.username}">
+      <input type="hidden" name="postId" value="${post.postId}">
+
+      <button type="submit">Skicka</button>
+   </form>
+   <div id="comment-section"><div>
+   `;
+   divPost.append(commentInput)
+
+   outerDiv.classList.add("flex-container");
+   divPost.classList.add("comment-container")
+   originalComment.classList.add("feed-post-container")
+
+
+   for (let i = 0; i < post.comments.length; i++) {
+      const commentDiv = document.createElement("div")
+      commentDiv.classList.add("feed-post-container")
+
+      const commentUser = document.createElement("h4")
+      const comment = document.createElement("p")
+      commentUser.innerHTML = post.comments[i].username
+      comment.innerHTML = post.comments[i].comment
+
+      commentDiv.append(commentUser)
+      commentDiv.append(comment)
+      commentSection.append(commentDiv)
+   }
+
+   divPost.append(commentSection)
+   outerDiv.append(divPost);
+   main.append(outerDiv);
+}
+
+
+function icons(heart, postElement, interactions, post) { //skriver ut icons beroende på ifall det är hjärta eller kommentar
+
+   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+   svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+   svg.setAttribute("width", "20");
+   svg.setAttribute("height", "20");
+   svg.setAttribute("fill", "currentColor");
+   svg.setAttribute("viewBox", "0 0 16 16");
+
+   if (heart) {
+      svg.setAttribute("class", "bi bi-heart-fill");
+      svg.setAttribute("onClick", "")
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("fill-rule", "evenodd");
+      path.setAttribute("d", "M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314");
+
+      svg.appendChild(path);
+   }
+   else {
+      svg.setAttribute("class", "bi bi-chat-dots");
+
+      const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path1.setAttribute("d", "M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2");
+
+      const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path2.setAttribute("d", "m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9 9 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.4 10.4 0 0 1-.524 2.318l-.003.011a11 11 0 0 1-.244.637c-.079.186.074.394.273.362a22 22 0 0 0 .693-.125m.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6-3.004 6-7 6a8 8 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a11 11 0 0 0 .398-2")
+
+      svg.appendChild(path1);
+      svg.appendChild(path2);
+
+
+      svg.addEventListener("click", function () {
+         commentStructure(post);
       });
 
+   }
+
+   interactions.appendChild(svg);
+   postElement.appendChild(interactions);
+   postsContainer.appendChild(postElement);
+}
+
+
+function showFriends() { //visar vännerna som användaren har
+
+   getFriends().then(friends => {
+      const friendsDiv = document.getElementById('friends-div');
+      friendsDiv.innerHTML = "";
+
+      friends.forEach(friend => {
+         const container = document.createElement("div");
+         container.classList.add("friend");
+
+         const usernameHeading = document.createElement("h2");
+         usernameHeading.textContent = friend.username;
+         container.appendChild(usernameHeading);
+
+         const chatButton = document.createElement("button")
+         chatButton.innerHTML = "Chat"
+         container.appendChild(chatButton)
+
+         friendsDiv.appendChild(container);
+
+      });
+   })
+}
+
+
+
+//Startarna till strukturerna
+function writePost(all = true) { //kollar ifall det är det är vänner eller alla som ska skrivas ut
+
+   let allPostContents = [];
+
+   if(all){ //ifall det är alla
+      getPosts().then(allPosts => {
+         for (let i = 0; i < allPosts.length; i++) {
+            allPosts[i].posts.forEach(post => {
+               allPostContents.push({
+                  username: allPosts[i].username,
+                  postContent: post.postContent,
+                  postId: post.postId,
+                  comments: post.comments
+               });
+            });
+         }
+         postStructure(allPostContents) //skriver ut det 
+      });
+   }else{ //ifall det är vänner
+      getFriends().then(friends => {
+         for (let i = 0; i < friends.length; i++) {
+            friends[i].posts.forEach(post => {
+               allPostContents.push({
+                  username: friends[i].username,
+                  postContent: post.postContent,
+                  postId: post.postId,
+                  comments: post.comments
+               });
+            });
+         }
+         postStructure(allPostContents) //skriver ut det 
+      })
+   }
+}
+
+
+
+//övrigt
+function shuffleArray(array) { //shufflar alla posts till en random order
+   for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+async function getProfilePicture() {
+   try {
+      response = await fetch('/sendProfilePicture');
+      profilePicture = await response.json();
+      return profilePicture;
+   }
+   catch (error) {
+      console.error('Error fetching posts:', error);
+   };
+}
+
+function showProfilePicture(){
+   getProfilePicture().then(profilePicturePath => {
+      
+   })
 }

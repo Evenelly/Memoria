@@ -1,3 +1,12 @@
+a{
+   color: inherit;
+   text-decoration: none;
+}
+
+a:hover{
+   text-decoration: underline;
+}
+
 html{
    width: 100%;
    height: 100%;
@@ -145,4 +154,55 @@ body{
 #pop-up-buttons{
    display: flex;
    justify-content: end;
+}
+
+
+
+
+
+#comment{
+   height: 50px;
+   width: 100%;
+   resize: none;
+}
+
+.comment-container{
+   width: 60%;
+}
+
+
+
+
+/*Friends*/
+#container{
+   width: 30vw;
+}
+
+.friend{
+   background-color: rgb(202, 202, 202);
+   border-radius: 2px;
+   padding: 3%;
+   margin-bottom: 3%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+
+
+/*Settings*/
+#settings{
+   background-color: rgb(221, 242, 249);   
+   position: absolute;
+   right: 0;
+   flex-direction: column;
+   padding: 1.5%;
+   margin: 1%;
+   border-radius: 2px;
+   border: solid rgb(169, 169, 169) 2px;
+   display: none;
+}
+
+#settings strong{
+   margin: 7% 0 7% 0;
 }
