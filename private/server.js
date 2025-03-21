@@ -11,8 +11,6 @@ const bcrypt = require('bcryptjs'); //för att crypta lösenord
 const upload = multer({ dest: "public/uploads" });
 
 
-DB.connect("mongodb+srv://admin:password_@cluster0.bqru0.mongodb.net/myDatabase");
-
 const User = require(__dirname + "/models/user.js");
 const Post = require(__dirname + "/models/post.js");
 const Comment = require(__dirname + "/models/comment.js");
@@ -153,24 +151,6 @@ server.post("/comment", async function (req, res) {
       res.status(404).send("Post not found.");
    }
 });
-
-
-
-//hittar användare med hjälp av id
-function findUserById(userId) {
-   var users = JSON.parse(fs.readFileSync(path.join(__dirname, 'accounts.json')));
-
-   for (let i = 0; i < users.length; i++) {
-      if (parseInt(users[i].userId, 10) === userId) {
-         
-         return users[i]
-      }
-   }
-
-   return console.log("error in findUserById")
-
-}
-
 
 
 //skickar alla posts till main (färdig med mongo)
