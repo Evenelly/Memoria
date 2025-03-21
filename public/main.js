@@ -12,7 +12,7 @@ function popUpShow() { //sätter på popuppen
 let settings = document.getElementById("settings")
 
 function settingsPop(){
-   if (settings.style.display === "none"){
+   if (settings.style.display === "none" || settings.style.display === ""){
       settings.style.display = "flex";
    }else{
       settings.style.display = "none"
@@ -24,12 +24,13 @@ function popUpDisable() { //stänger av popuppen
 }
 
 //pre set
-if (window.location.pathname.includes("index.html")) { //skriver ut postsen direkt
+window.onload = showProfilePicture;
+
+if (window.location.pathname.includes("index.html") || window.location.pathname.includes("/loginUser")) { //skriver ut postsen direkt
    writePost();
 }else if (window.location.pathname.includes("friends.html")) {
    showFriends();
 }
-
 //från servern
 async function getPosts() {
    try {
@@ -91,6 +92,7 @@ function commentStructure(post) {
    main = document.getElementById("main");
    main.innerHTML = "";
 
+
    const outerDiv = document.createElement("div")
    const divPost = document.createElement("div");
 
@@ -103,6 +105,7 @@ function commentStructure(post) {
    <p>${post.postContent}</p>`
    divPost.append(originalComment)
 
+   console.log(post.postId)
 
    commentInput.innerHTML = `
    <form action="/comment" method="post">
@@ -111,8 +114,7 @@ function commentStructure(post) {
       name="commentInput"></textarea>
 
       <!-- Hidden inputs for postUsername and postId -->
-      <input type="hidden" name="username" value="${post.username}">
-      <input type="hidden" name="postId" value="${post.postId}">
+      <input type="hidden" name="postInfo" value="${post.postId}">
 
       <button type="submit">Skicka</button>
    </form>
@@ -131,8 +133,8 @@ function commentStructure(post) {
 
       const commentUser = document.createElement("h4")
       const comment = document.createElement("p")
-      commentUser.innerHTML = post.comments[i].username
-      comment.innerHTML = post.comments[i].comment
+      commentUser.innerHTML = post.comments[i].user.username
+      comment.innerHTML = post.comments[i].content
 
       commentDiv.append(commentUser)
       commentDiv.append(comment)
@@ -188,7 +190,7 @@ function icons(heart, postElement, interactions, post) { //skriver ut icons bero
    postsContainer.appendChild(postElement);
 }
 
-
+//visar de vänner användaren har
 function showFriends() { //visar vännerna som användaren har
 
    getFriends().then(friends => {
@@ -213,25 +215,77 @@ function showFriends() { //visar vännerna som användaren har
    })
 }
 
+//visar profilbild
+function showProfilePicture() {
+   getProfilePicture().then(profilePicturePath => {
+      profileParent = document.getElementById("profile-info")
+      if (profilePicturePath === "") { //ifall personen inte har en profilbild
+
+         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+         svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+         svg.setAttribute("width", "32");
+         svg.setAttribute("height", "32");
+         svg.setAttribute("fill", "currentColor");
+         svg.setAttribute("viewBox", "0 0 16 16");
+
+         svg.setAttribute("class", "bi bi-person-circle");
+         svg.setAttribute("onClick", "")
 
 
-//Startarna till strukturerna
+         const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+         path1.setAttribute("d", "M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0");
+
+         const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+         path2.setAttribute("d", "M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1")
+
+         svg.appendChild(path1);
+         svg.appendChild(path2);
+
+         profileParent.appendChild(svg);
+
+      } else { //ifall personen har en profilbild
+
+         const profilePicture = document.createElement("img")
+         profilePicture.classList.add("profile-picture")
+
+         profileParent.appendChild(profilePicture)
+         
+         profilePicturePath = profilePicturePath.replace("\public\\", ""); //pga att det ska ut gå från filerna i public
+         profilePicture.setAttribute("src", profilePicturePath)
+
+      }
+   })
+}
+
+
+//Informations samling
 function writePost(all = true) { //kollar ifall det är det är vänner eller alla som ska skrivas ut
 
    let allPostContents = [];
 
    if(all){ //ifall det är alla
-      getPosts().then(allPosts => {
-         for (let i = 0; i < allPosts.length; i++) {
-            allPosts[i].posts.forEach(post => {
-               allPostContents.push({
-                  username: allPosts[i].username,
-                  postContent: post.postContent,
-                  postId: post.postId,
-                  comments: post.comments
-               });
-            });
+      getPosts().then(posts => {
+         // for (let i = 0; i < allPosts.length; i++) {
+         //    allPosts[i].posts.forEach(post => {
+         //       allPostContents.push({
+         //          username: allPosts[i].username,
+         //          postContent: post.postContent,
+         //          comments: post.comments
+         //       });
+         //    });
+         // }
+
+         for (let i = 0; i < posts.length; i++) {
+            allPostContents.push({
+               postId: posts[i].postId,
+               username: posts[i].username,
+               postContent: posts[i].content,
+               date: posts[i].date,
+               comments: posts[i].comments
+            })
          }
+
+
          postStructure(allPostContents) //skriver ut det 
       });
    }else{ //ifall det är vänner
@@ -251,6 +305,16 @@ function writePost(all = true) { //kollar ifall det är det är vänner eller al
    }
 }
 
+async function getProfilePicture() {
+   try {
+      response = await fetch('/sendProfilePicture');
+      data = await response.json();
+      return data.profilePicture;
+   }
+   catch (error) {
+      console.error('Error fetching posts:', error);  
+   };
+}
 
 
 //övrigt
@@ -262,28 +326,3 @@ function shuffleArray(array) { //shufflar alla posts till en random order
 }
 
 
-
-
-
-
-
-
-
-
-
-async function getProfilePicture() {
-   try {
-      response = await fetch('/sendProfilePicture');
-      profilePicture = await response.json();
-      return profilePicture;
-   }
-   catch (error) {
-      console.error('Error fetching posts:', error);
-   };
-}
-
-function showProfilePicture(){
-   getProfilePicture().then(profilePicturePath => {
-      
-   })
-}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+   <header class="header">
+      <a href="index.html"><strong class="title">Memoria</strong></a>
+   
+      <div class="header-info">
+         <a href="index.html"><strong>Feed</strong></a>
+         <a href="games.html"><strong>Spel</strong></a>
+         <a href="friends.html"><strong>Vänner</strong></a>
+         <div id="profile-info" onclick="settingsPop()">
+   
+         </div>
+      </div>
+   </header>
+
+   <div id="settings">
+      <strong><a href="account.html">Konto</a></strong>
+      <strong><a href="settings.html">Inställningar</a></strong>
+      <strong>Logga ut</strong>
+   </div>
+
+   <main class="flex-container">
+      <form action="/saveFile" method="post" enctype="multipart/form-data" id="settings-site">
+         <div class="settings-info">
+            <h3>Användarnamn</h3>
+            <input placeholder="Nytt användarnamn" name="newUsername">
+         </div>
+
+         <div class="settings-info">
+            <h3>Lösenord</h3>
+            <input placeholder="Föregående lösenord" name="oldPassword">
+            <input placeholder="Nytt lösenord" name="newPassword">
+         </div>
+
+         <div class="settings-info">
+            <h3>Profilbild</h3>
+            <input type="file" name="profilePicture">
+         </div>
+
+         <div class="settings-info">
+            <h3>Kom ihåg mitt konto</h3>
+            <input type="checkbox" value="remember"><strong>Ja</strong>
+         </div>
+
+         <div id="settings-button-flex">
+            <button id="settings-submit" type="submit" name="cookies" value="yes">Uppdatera</button>
+         </div>
+
+      </form>
+   </main>
+
+
+   <script src="main.js"></script>
+
+</body>
+
+</html>

@@ -206,3 +206,42 @@ body{
 #settings strong{
    margin: 7% 0 7% 0;
 }
+
+
+.profile-picture{
+   height: 50px;
+   width: 50px;
+   border-radius: 100%;
+}
+
+#profile-info{
+   width: fit-content;
+   height: fit-content;
+}
+
+
+
+
+#settings-site{
+   background-color: rgb(221, 242, 249);
+   padding: 2% 2% 1% 2%;
+   border-radius: 2px;
+   margin-top: 2%;
+}
+
+.settings-info{
+   background-color: rgb(202, 223, 231);
+   border-radius: 2%;
+   padding: 3%;
+   margin-bottom: 2%;
+}
+
+.settings-info h3{
+   margin-top: 2%;
+}
+
+#settings-button-flex{
+   display: flex;
+   justify-content: end;
+   margin-top: 6%;
+}
