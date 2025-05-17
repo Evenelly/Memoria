@@ -1,79 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
    <head>
       <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-      <link rel="stylesheet" href="/style.css">
-      
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+      <title>Document</title> <!-- Sidans titel som syns i fliken -->
+      <link rel="stylesheet" href="/style.css"> <!-- Kopplar in extern CSS-fil -->
    </head>
 
    <body>
+      <!-- Sidhuvud med navigering -->
       <header class="header">
          <a href="index.html"><strong class="title">Memoria</strong></a>
 
+         <!-- Navigeringslänkar och profilbild -->
          <div class="header-info">
-            <a href="index.html"><strong>Feed</strong></a>
-            <a href="games.html"><strong>Spel</strong></a>
-            <a href="friends.html"><strong>Vänner</strong></a>
-            <div id="profile-info" onclick="settingsPop()">
+            <a href="index.html"><strong>Feed</strong></a> <!-- Länk till feed -->
+            <a href="games.html"><strong>Spel</strong></a> <!-- Länk till spel -->
+            <a href="friends.html"><strong>Vänner</strong></a> <!-- Länk till vänner -->
 
-            </div>   
+            <!-- Profilbild som när den klickas på anropar funktionen settingsPop() -->
+            <div class="profile-img" onclick="settingsPop()">
+            </div>
          </div>
       </header>
 
-
-
+      <!-- Huvudinnehåll på sidan -->
       <main id="main">
+         <!-- Inställningsmeny som är dold till att börja med -->
          <div id="settings">
-            <strong><a href="account.html">Konto</a></strong>
-            <strong><a href="settings.html">Inställningar</a></strong>
-            <strong>Logga ut</strong>
+            <strong><a href="account.html">Konto</a></strong> <!-- Länk till kontosida -->
+            <strong><a href="settings.html">Inställningar</a></strong> <!-- Länk till inställningar -->
+            <strong><a href="/init">Logga ut</a></strong> <!-- Länk för att logga ut -->
          </div>
 
+         <!-- Flex-container som centrerar feed-innehållet -->
          <div class="flex-container">
-            <div id="feed-container"">
-         
+            <div id="feed-container">
+               <!-- Header för feed-sektionen -->
                <div id="feed-header">
                   <h2>Feed</h2>
                   <div>
+                     <!-- Knappar som filtrerar feed; anropar JavaScript-funktion writePost med argument -->
                      <button onclick="writePost(true)">Alla</button>
                      <button onclick="writePost(false)">Vänner</button>
                   </div>
                </div>
-         
+
+               <!-- Behållare för inläggen -->
                <div id="posts">
-                  <div id="postsContainer"></div>
+                  <div id="postsContainer"></div> <!-- Här läggs inläggen dynamiskt in via JS -->
                </div>
-         
+
             </div>
          </div>
-         
-         
+
+         <!-- Plus-ikon för att lägga till nytt inlägg, anropar popUpShow() vid klick -->
          <div onclick="popUpShow()">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle"
                id="upload" viewBox="0 0 16 16">
                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-               <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+               <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
             </svg>
          </div>
-         
+
+         <!-- Overlay och popup-formulär för att skriva nytt inlägg -->
          <div id="overlay">
             <form id="pop-up" action="/post" method="post">
                <h2>Lägg upp ett inlägg</h2>
                <textarea type="text" placeholder="Skriv din text... (max 1000 karaktärer)" maxlength="1000"
-                  name="textInput"></textarea>
+                  name="textInput"></textarea> <!-- Textfält för inlägg -->
                <div id="pop-up-buttons">
+                  <!-- Avbrytknapp som döljer popupen -->
                   <button type="button" onclick="popUpDisable()">Avbryt</button>
+                  <!-- Skicka-knapp som skickar formuläret -->
                   <button type="submit">Skicka</button>
                </div>
             </form>
          </div>
       </main>
 
+      <!-- JavaScript-filen som hanterar sidans interaktivitet -->
       <script src="main.js"></script>
-      
-
    </body>
 
 </html>

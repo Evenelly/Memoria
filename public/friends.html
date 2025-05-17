@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-   <link rel="stylesheet" href="/style.css">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title> <!-- Sidans titel -->
+      <link rel="stylesheet" href="/style.css"> <!-- Länk till extern CSS -->
+   </head>
 
-</head>
+   <body>
+      <!-- Sidhuvud med navigering -->
+      <header class="header">
+         <!-- Titel som länkar till startsidan -->
+         <a href="index.html"><strong class="title">Memoria</strong></a>
 
-<body>
-   <header class="header">
-      <a href="index.html"><strong class="title">Memoria</strong></a>
-   
-      <div class="header-info">
-         <a href="index.html"><strong>Feed</strong></a>
-         <a href="games.html"><strong>Spel</strong></a>
-         <a href="friends.html"><strong>Vänner</strong></a>
-         <div id="profile-info" onclick="settingsPop()">
-   
+         <!-- Navigeringslänkar och profilbild -->
+         <div class="header-info">
+            <a href="index.html"><strong>Feed</strong></a> <!-- Länk till feed -->
+            <a href="games.html"><strong>Spel</strong></a> <!-- Länk till spel -->
+            <a href="friends.html"><strong>Vänner</strong></a> <!-- Länk till vänner (denna sida) -->
+
+            <!-- Profilbild, klickbar för att öppna inställningar -->
+            <div class="profile-img" onclick="settingsPop()">
+            </div>
          </div>
+      </header>
+
+      <!-- Meny för inställningar (konto, inställningar, logga ut) -->
+      <div id="settings">
+         <strong><a href="account.html">Konto</a></strong>
+         <strong><a href="settings.html">Inställningar</a></strong>
+         <strong><a href="/init">Logga ut</a></strong>
       </div>
-   </header>
 
-   <div id="settings">
-      <strong><a href="account.html">Konto</a></strong>
-      <strong><a href="settings.html">Inställningar</a></strong>
-      <strong>Logga ut</strong>
-   </div>
+      <!-- Huvudinnehåll: Vänner-sektionen -->
+      <main class="flex-container">
+         <div id="container">
+            <h1>Vänner</h1> <!-- Rubrik för sidan -->
+            <div id="friends-div"></div> <!-- Här kommer listan på vänner att läggas in dynamiskt via JavaScript -->
+         </div>
+      </main>
 
-   <main class="flex-container">
-      <div id="container">
-         <h1>Vänner</h1>
-         <div id="friends-div"></div>
-      </div>
-   </main>
+      <!-- JavaScript-fil som hanterar sidans funktionalitet -->
+      <script src="main.js"></script>
 
+   </body>
 
-   <script src="main.js"></script>
-
-</body>
+</html>

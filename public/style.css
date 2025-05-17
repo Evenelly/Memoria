@@ -1,25 +1,34 @@
-a{
+/* Länkar ärvs från sin förälder i färg och saknar understrykning */
+a {
    color: inherit;
    text-decoration: none;
 }
 
-a:hover{
+/* När man hovrar över länkar får de en understrykning */
+a:hover {
    text-decoration: underline;
 }
 
-html{
+/* Grundinställningar för hela sidan */
+html {
    width: 100%;
    height: 100%;
+   font-family: Sans-serif;
+   /* Lättläst font för äldre */
+   font-size: 19px;
+   /* Större text för bättre läsbarhet */
 }
 
-body{
+/* Body utan marginal och tar upp hela fönstrets bredd och höjd */
+body {
    margin: 0;
    width: 100%;
    height: 100%;
 }
 
-.header{
-   background-color: rgb(221, 242, 249);
+/* Header med ljusblå bakgrund, centrerar innehållet horisontellt och vertikalt med flexbox */
+.header {
+   background-color: rgb(201, 229, 237);
    height: 10%;
    display: flex;
    align-items: center;
@@ -27,60 +36,63 @@ body{
    padding: 0% 2%;
 }
 
-.header-info{
+/* Del av headern för information, använder flex för jämn fördelning */
+.header-info {
    width: 30%;
    display: flex;
    justify-content: space-between;
    align-items: center;
 }
 
-
-
-.flex-container{
+/* Container som använder flexbox för att centrera och stapla innehållet vertikalt */
+.flex-container {
    display: flex;
    justify-content: center;
    align-items: center;
    flex-direction: column;
 }
 
-
-
-.log-sign{
+/* Inloggning/registrering - box med ljus bakgrund och rundade hörn */
+.log-sign {
    display: flex;
-   background-color: rgb(221, 242, 249);   
+   background-color: rgb(201, 229, 237);
    flex-direction: column;
    width: 30%;
    padding: 3%;
    border-radius: 2px;
-   margin-top: 10%;
+   margin-top: 5%;
 }
 
-.log-sign h3{
+.log-sign h3 {
    margin-top: 0;
+   /* Tar bort extra utrymme ovanför rubriken */
 }
 
-.log-sign div{
+.log-sign div {
    display: flex;
    justify-content: end;
+   /* Högerjusterar innehåll */
 }
 
-.log-sign button{
+.log-sign button {
    margin-top: 2%;
+   /* Lite utrymme ovanför knappar */
 }
 
+/* Feed-sektionen */
 
-
-/*Feed classes och ids*/
-
-#feed-container{
+/* Container för hela feed, begränsad bredd */
+#feed-container {
    width: 30vw;
 }
 
+/* Header i feed, sprider ut innehållet på båda sidor */
 #feed-header {
    display: flex;
    justify-content: space-between;
 }
 
+/* Del av feed-header med flexbox, centrerar vertikalt */
 #feed-header div {
    display: flex;
    align-items: center;
@@ -88,24 +100,48 @@ body{
    justify-content: space-between;
 }
 
-
-
-.feed-post-container{
+/* Individuella inläggsboxar med bakgrund och marginal */
+.feed-post-container {
    background-color: rgba(64, 92, 92, 0.297);
    padding: 2%;
    border-radius: 4px;
    margin-bottom: 2%;
 }
 
-.interactions{
+/* Underdel av inlägg med innehåll utspritt på sidorna */
+.bottom-section {
    display: flex;
-   justify-content: end;
-   margin: 2%;
-   gap: 2%;
+   justify-content: space-between;
 }
 
+/* Interaktionsknappar (gilla, kommentera etc.) i rad med gap */
+.interactions {
+   display: flex;
+   gap: 5px;
+   align-items: center;
+}
 
+/* SVG-ikoner anpassas efter innehåll */
+.interactions svg {
+   height: fit-content;
+   width: fit-content;
+}
 
+/* Profilbild i inlägg, rund med 50x50 pixlar */
+.post-img {
+   width: 50px;
+   height: 50px;
+   border-radius: 100%;
+}
+
+/* Profilinfo i inlägg med flex och mellanrum */
+.post-profile-information {
+   display: flex;
+   align-items: center;
+   gap: 3%;
+}
+
+/* Uppladdningsknapp placerad i nedre högra hörnet */
 #upload {
    position: fixed;
    bottom: 0;
@@ -113,24 +149,24 @@ body{
    margin: 2%;
 }
 
-#posts{
+/* Sektion för alla inlägg, tar hela bredden */
+#posts {
    width: 100%;
 }
 
-
-
-
-/* Pop-up */
-#overlay{
+/* Pop-up bakgrund, semi-transparent och täcker hela skärmen */
+#overlay {
    background-color: rgba(0, 0, 0, 0.641);
    width: 100%;
    height: 100%;
    position: fixed;
    top: 0%;
    left: 0%;
-   display: none; 
+   display: none;
+   /* Gömmer den tills den behövs */
 }
 
+/* Pop-up ruta centrerad på skärmen med skugga */
 #pop-up {
    width: 35%;
    padding: 1.5%;
@@ -143,42 +179,41 @@ body{
    left: 50%;
    transform: translate(-50%, -50%);
    z-index: 1000;
+   /* Ligger ovanpå allt annat */
 }
 
+/* Textarea i pop-up, stor och utan resize */
 #pop-up textarea {
    width: 100%;
    height: 100px;
    resize: none;
 }
 
-#pop-up-buttons{
+/* Container för pop-up knappar, högerjusterad */
+#pop-up-buttons {
    display: flex;
    justify-content: end;
 }
 
-
-
-
-
-#comment{
+/* Kommentarfält */
+#comment {
    height: 50px;
    width: 100%;
    resize: none;
 }
 
-.comment-container{
+/* Container för kommentar, bredd 60% */
+.comment-container {
    width: 60%;
 }
 
-
-
-
-/*Friends*/
-#container{
+/* Vän-sektionen */
+#container {
    width: 30vw;
 }
 
-.friend{
+/* Styling för enskild vän i listan */
+.friend {
    background-color: rgb(202, 202, 202);
    border-radius: 2px;
    padding: 3%;
@@ -188,11 +223,9 @@ body{
    align-items: center;
 }
 
-
-
-/*Settings*/
-#settings{
-   background-color: rgb(221, 242, 249);   
+/* Inställningsmenyn */
+#settings {
+   background-color: rgb(221, 242, 249);
    position: absolute;
    right: 0;
    flex-direction: column;
@@ -201,47 +234,126 @@ body{
    border-radius: 2px;
    border: solid rgb(169, 169, 169) 2px;
    display: none;
+   /* Gömmer den initialt */
 }
 
-#settings strong{
+#settings strong {
    margin: 7% 0 7% 0;
 }
 
-
-.profile-picture{
+/* Profilbildar är runda och 50x50 pixlar */
+.profile-picture {
    height: 50px;
    width: 50px;
    border-radius: 100%;
 }
 
-#profile-info{
+/* Profilinfo sektion */
+#profile-info {
    width: fit-content;
    height: fit-content;
 }
 
-
-
-
-#settings-site{
+/* Inställningssektionens yttre container */
+#settings-site {
    background-color: rgb(221, 242, 249);
    padding: 2% 2% 1% 2%;
    border-radius: 2px;
    margin-top: 2%;
 }
 
-.settings-info{
+/* Info i inställningar med bakgrund och rundade hörn */
+.settings-info {
    background-color: rgb(202, 223, 231);
    border-radius: 2%;
    padding: 3%;
    margin-bottom: 2%;
 }
 
-.settings-info h3{
+.settings-info h3 {
    margin-top: 2%;
 }
 
-#settings-button-flex{
+/* Flex-container för knappar i inställningarna, högerjusterad */
+#settings-button-flex {
    display: flex;
    justify-content: end;
    margin-top: 6%;
 }
+
+/* GDPR-sektionen */
+
+/* Checkboxar i GDPR-info har fast bredd */
+#GDPR-info input {
+   width: 30px;
+}
+
+/* Understrukna länkar är klickbara (cursor ändras) */
+#GDPR-info u {
+   cursor: pointer;
+}
+
+/* Sektioner för Privacy Policy och Terms of Use, gömda tills aktiva */
+#privacyPolicy,
+#termsOfUse {
+   width: 100%;
+   position: fixed;
+   top: 13%;
+   left: 0;
+   display: none;
+   justify-content: center;
+   align-items: center;
+}
+
+/* Flexbox för GDPR innehåll med scroll om det behövs */
+.flex-GDPR {
+   background-color: rgb(234, 240, 241);
+   padding: 1%;
+   width: 40%;
+   height: 500px;
+   display: flex;
+   flex-direction: row;
+   border-radius: 4px;
+   border: 2px solid;
+   overflow-y: auto;
+   position: relative;
+}
+
+/* Stäng-knapp (X) som sitter fast överst */
+.X {
+   position: sticky;
+   top: 0;
+   right: 0;
+}
+
+/* Submit knapp med halv genomskinlighet */
+#submit {
+   opacity: 50%;
+}
+
+/* Profilbeskrivning - radlayout med gap */
+#profile-description {
+   display: flex;
+   flex-direction: row;
+   gap: 20px;
+}
+
+/* Profilbild i profil-info, tvingar storlek */
+#profile-info-img img {
+   width: 110px !important;
+   height: 110px !important;
+}
+
+/* Profilinfo ruta med bakgrund, padding och rundade hörn */
+#profile-info {
+   background-color: rgb(176, 212, 212);
+   width: 50%;
+   display: flex;
+   margin: 2% 0%;
+   border-radius: 2px;
+   padding: 1%;
+   flex-direction: column;
+}
+
+/* Plats för profil-inlägg, ingen specifik styling */
+#profile-posts {}

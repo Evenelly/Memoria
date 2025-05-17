@@ -4,62 +4,69 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-   <link rel="stylesheet" href="/style.css">
-
+   <title>Document</title> <!-- Sidans titel -->
+   <link rel="stylesheet" href="/style.css"> <!-- Länk till extern CSS -->
 </head>
 
 <body>
+   <!-- Sidans header med navigeringslänkar -->
    <header class="header">
-      <a href="index.html"><strong class="title">Memoria</strong></a>
-   
+      <a href="index.html"><strong class="title">Memoria</strong></a> <!-- Länk till startsidan -->
+
       <div class="header-info">
-         <a href="index.html"><strong>Feed</strong></a>
-         <a href="games.html"><strong>Spel</strong></a>
-         <a href="friends.html"><strong>Vänner</strong></a>
-         <div id="profile-info" onclick="settingsPop()">
-   
+         <a href="index.html"><strong>Feed</strong></a> <!-- Navigering till feed -->
+         <a href="games.html"><strong>Spel</strong></a> <!-- Navigering till spel -->
+         <a href="friends.html"><strong>Vänner</strong></a> <!-- Navigering till vänner -->
+         <div class="profile-img" onclick="settingsPop()"> <!-- Profilbild som triggar inställningar -->
          </div>
       </div>
    </header>
 
+   <!-- Inställningsmenyn med länkar -->
    <div id="settings">
       <strong><a href="account.html">Konto</a></strong>
       <strong><a href="settings.html">Inställningar</a></strong>
-      <strong>Logga ut</strong>
+      <strong><a href="/init">Logga ut</a></strong>
    </div>
 
+   <!-- Huvudinnehållet med formulär för att uppdatera användarinställningar -->
    <main class="flex-container">
       <form action="/saveFile" method="post" enctype="multipart/form-data" id="settings-site">
+
+         <!-- Ändra användarnamn -->
          <div class="settings-info">
             <h3>Användarnamn</h3>
             <input placeholder="Nytt användarnamn" name="newUsername">
          </div>
 
+         <!-- Ändra lösenord -->
          <div class="settings-info">
             <h3>Lösenord</h3>
-            <input placeholder="Föregående lösenord" name="oldPassword">
-            <input placeholder="Nytt lösenord" name="newPassword">
+            <input placeholder="Föregående lösenord" name="oldPassword"> <!-- Nuvarande lösenord -->
+            <input placeholder="Nytt lösenord" name="newPassword"> <!-- Nytt lösenord -->
          </div>
 
+         <!-- Ladda upp profilbild -->
          <div class="settings-info">
             <h3>Profilbild</h3>
-            <input type="file" name="profilePicture">
+            <input type="file" name="profilePicture"> <!-- Filuppladdning -->
          </div>
 
+         <!-- Val för "Kom ihåg mig" -->
          <div class="settings-info">
             <h3>Kom ihåg mitt konto</h3>
-            <input type="checkbox" value="remember"><strong>Ja</strong>
+            <input type="checkbox" name="cookies" value="remember"><strong>Ja</strong>
          </div>
 
+         <!-- Skicka knapp -->
          <div id="settings-button-flex">
-            <button id="settings-submit" type="submit" name="cookies" value="yes">Uppdatera</button>
+            <button id="settings-submit" type="submit">Uppdatera</button>
          </div>
 
       </form>
    </main>
 
-
+   <!-- JavaScript som hanterar eventuella interaktioner -->
    <script src="main.js"></script>
 
 </body>

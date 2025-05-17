@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
-      <link rel="stylesheet" href="/style.css">
 
-   </head>
-   <body>
-         <header class="header">
-            <strong class="title">Memoria</strong>
-         </header>
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title> <!-- Sidtitel -->
+   <link rel="stylesheet" href="/style.css"> <!-- Länkar till extern CSS -->
+</head>
 
+<body>
+   <!-- Sidans header med titel -->
+   <header class="header">
+      <strong class="title">Memoria</strong>
+   </header>
 
-         <div class="flex-container">
-            <form class="log-sign" action="/login" method="post" autocomplete="off">
-               <h3>Logga in</h3>
-               <p>Användarnamn: </p>
-               <input type="text" name="usernameInput">
-               <p>Lösenord:</p>
-               <input type="text" name="passwordInput">
-               <p>Har inget konto?</p>
-               <a href="signin.html"><button type="button">Skapa konto</button></a>
-               <div>
-                  <button type="submit">Skicka</button>
-               </div>
-            </form>
+   <!-- Formulär för inloggning centrerat med flexbox -->
+   <div class="flex-container">
+      <form class="log-sign" action="/login" method="post" autocomplete="off">
+         <h3>Logga in</h3>
+         <p>Användarnamn: </p>
+         <input type="text" name="usernameInput"> <!-- Textfält för användarnamn -->
+         <p>Lösenord:</p>
+         <input type="text" name="passwordInput"> <!-- Textfält för lösenord, överväg type="password" för säkerhet -->
+         <p>Har inget konto?</p>
+         <!-- Länk till registreringssida med knapp -->
+         <a href="signin.html"><button type="button">Skapa konto</button></a>
+         <div>
+            <button type="submit">Skicka</button> <!-- Submit-knapp för inloggning -->
          </div>
+      </form>
+   </div>
 
-         <script src="main.js"></script>
-   </body>
+   <!-- JavaScriptfil som hanterar eventuella funktioner -->
+   <script src="main.js"></script>
+</body>
+
 </html>
